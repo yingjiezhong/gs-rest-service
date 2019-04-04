@@ -26,6 +26,8 @@ public class JobControl {
     private ExecutorService executor = Executors.newCachedThreadPool();
 
     private final AtomicLong counter = new AtomicLong();
+    private final AtomicLong progressCounter = new AtomicLong();
+
     private ConcurrentMap<String, Job> jobConcurrentMap = new ConcurrentHashMap<>();
 
     @GetMapping
@@ -75,7 +77,23 @@ public class JobControl {
         SseEmitter emitter = new SseEmitter();
         executor.execute(() -> {
             try {
-                emitter.send("/sseInResponseEntity" + " @ " + new Date());
+                SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
+                if (progressCounter.get() > 5) {
+                    eventBuilder.id(String.valueOf(counter))
+                            .name("complete")
+                            .data(String.valueOf(progressCounter.getAndIncrement()));
+                } else {
+                    if (progressCounter.get() > 3) {
+                        SseEmitter
+
+                    } else {
+                        eventBuilder.id(String.valueOf(counter))
+                                .name("progress")
+                                .data(String.valueOf(progressCounter.getAndIncrement()));
+                    }
+                }
+                emitter.send(eventBuilder);
+//                emitter.send("/sseInResponseEntity" + " @ " + new Date());
                 // we could send more events
                 emitter.complete();
             } catch (Exception ex) {
