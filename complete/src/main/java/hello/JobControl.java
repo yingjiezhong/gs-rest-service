@@ -83,14 +83,9 @@ public class JobControl {
                             .name("complete")
                             .data(String.valueOf(progressCounter.getAndIncrement()));
                 } else {
-                    if (progressCounter.get() > 3) {
-                        SseEmitter
-
-                    } else {
-                        eventBuilder.id(String.valueOf(counter))
-                                .name("progress")
-                                .data(String.valueOf(progressCounter.getAndIncrement()));
-                    }
+                    eventBuilder.id(String.valueOf(counter))
+                            .name("progress")
+                            .data(String.valueOf(progressCounter.getAndIncrement()));
                 }
                 emitter.send(eventBuilder);
 //                emitter.send("/sseInResponseEntity" + " @ " + new Date());
