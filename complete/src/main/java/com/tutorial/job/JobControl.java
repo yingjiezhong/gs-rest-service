@@ -1,4 +1,4 @@
-package hello;
+package com.tutorial.job;
 
 import io.jmnarloch.spring.boot.rxjava.async.ObservableSseEmitter;
 import io.reactivex.Observable;
